@@ -1,0 +1,11 @@
+# Normalize EOL
+* text=auto eol=lf
+
+# Binary assets
+*.webp binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.png binary
+*.jpg binary
+*.jpeg binary
