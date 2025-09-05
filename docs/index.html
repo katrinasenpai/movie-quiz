@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Киновикторина «Красногвардейский в кино» - проверьте свои знания о советском кино и знаковых местах съемок в Санкт-Петербурге">
+    <meta name="keywords" content="кино, викторина, Ленфильм, Красногвардейский район, Санкт-Петербург, советское кино">
+    <meta name="author" content="Фонд развития культуры «Эфес»">
+    <meta property="og:title" content="Красногвардейский в кино - Киновикторина">
+    <meta property="og:description" content="Проверьте свои знания о советском кино и знаковых местах съемок в Санкт-Петербурге">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://krasnakarta.ru/quiz">
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googleapis.com" crossorigin>
+    <title>Красногвардейский в кино - Киновикторина</title>
+    <link rel="preload" href="Pilotka.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="Christopher.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="Montserrat-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="Montserrat-Bold.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" as="image" href="img/logo-festival.webp" type="image/webp">
+    <link rel="preload" as="image" href="img/logo-partner-1.webp" type="image/webp">
+    <link rel="preload" as="image" href="img/logo-partner-2.webp" type="image/webp">
+    <link rel="preload" as="image" href="img/logo-partner-3.webp" type="image/webp">
+    <link rel="preload" as="image" href="img/logo-partner-4.webp" type="image/webp">
+    <link rel="preload" as="image" href="img/logo-partner-5.webp" type="image/webp">
+    <link rel="stylesheet" href="styles.min.css">
+    <link rel="canonical" href="https://krasnakarta.ru/quiz">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#4ba4cb">
+</head>
+<body>
+<footer class="logos">
+    <div class="logos-inner">
+        <div class="logo-main">
+            <img src="img/logo-festival.webp" alt="Лого фестиваля Как пройти в библиотеку" fetchpriority="high" loading="eager" decoding="async">
+        </div>
+        <div class="logo-partners">
+            <img src="img/logo-partner-1.webp" alt="Лого партнёра 1" loading="eager" decoding="async">
+            <img src="img/logo-partner-2.webp" alt="Лого партнёра 2" loading="eager" decoding="async">
+            <img src="img/logo-partner-3.webp" alt="Лого партнёра 3" loading="eager" decoding="async">
+            <img src="img/logo-partner-4.webp" alt="Лого партнёра 4" loading="eager" decoding="async">
+            <img src="img/logo-partner-5.webp" alt="Лого партнёра 5" loading="eager" decoding="async">
+        </div>
+    </div>
+ </footer>
+
+<div id="welcome-screen" class="welcome-screen">
+    <div class="welcome-content">
+        <h1>КРАСНОГВАРДЕЙСКИЙ В КИНО</h1>
+        <p>Проверьте свои знания о советском кино и знаковых местах съемок в Санкт-Петербурге!</p>
+        <img src="img/start.webp" alt="Заставка квиза" loading="lazy" decoding="async" width="1100" height="619" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1100px">
+        <button id="start-quiz-btn" class="action-btn">Начать квиз</button>
+    </div>
+</div>
+
+
+<div id="quiz-container" class="quiz-container">
+    <div class="quiz-header">
+        <h1>КРАСНОГВАРДЕЙСКИЙ В КИНО</h1>
+        <p>Проверь свои знания о советском кино и знаковых местах съемок!</p>
+        <div id="progress" class="progress">Вопрос <span id="progress-current">1</span>/<span id="progress-total">11</span></div>
+    </div>
+
+    <div id="quiz-body">
+        <div class="quiz-step active" data-question="1" data-type="image" data-answer="guzeyeva.webp" 
+             data-explanation="Правильно! Лариса Гузеева действительно снялась в этом фильме в 1985 году, когда ей было 26 лет."
+             data-explanation-wrong="Не совсем. Правильный ответ - Лариса Гузеева, которая снялась в этом фильме в 1985 году в возрасте 26 лет.">
+            <div class="question-title">Один из этих талантов снялся в фильме «Встретимся в метро» 1985 года в возрасте 26 лет. Кто это?</div>
+            <div class="image-options">
+                <img src="img/guzeyeva.webp" alt="Актриса 1" data-value="guzeyeva.webp" loading="lazy" decoding="async" width="150" height="150" onerror="this.onerror=null;this.src='https://placehold.co/150x150/ccc/fff?text=Гузеева';">
+                <img src="img/boyarskiy.webp" alt="Актер 2" data-value="boyarskiy.webp" loading="lazy" decoding="async" width="150" height="150" onerror="this.onerror=null;this.src='https://placehold.co/150x150/ccc/fff?text=Боярский';">
+                <img src="img/nagiyev.webp" alt="Актер 3" data-value="nagiyev.webp" loading="lazy" decoding="async" width="150" height="150" onerror="this.onerror=null;this.src='https://placehold.co/150x150/ccc/fff?text=Нагиев';">
+                <img src="img/gordeyev.webp" alt="Актер 4" data-value="gordeyev.webp" loading="lazy" decoding="async" width="150" height="150" onerror="this.onerror=null;this.src='https://placehold.co/150x150/ccc/fff?text=Гордеев';">
+            </div>
+            <div class="feedback"></div>
+        </div>
+        
+        <div class="quiz-step" data-question="2" data-type="radio" data-answer="Встретимся в метро" 
+             data-explanation="Верно! Интересный факт: фильм снимали параллельно с реальным строительством станций «Ладожская» и «Новочеркасская»."
+             data-explanation-wrong="Неверно. Этот фильм о строителях ленинградского метро называется «Встретимся в метро». Его снимали параллельно с реальным строительством станций!">
+             <div class="question-title">Какой советский фильм 1985 года о строителях ленинградского метро снимался на Малой Охте?</div>
+             <div class="answers">
+                 <div class="answer"><input type="radio" name="q2" id="q2a1" value="Чрезвычайное происшествие"><label for="q2a1">«Чрезвычайное происшествие»</label></div>
+                 <div class="answer"><input type="radio" name="q2" id="q2a2" value="Встретимся в метро"><label for="q2a2">«Встретимся в метро»</label></div>
+                 <div class="answer"><input type="radio" name="q2" id="q2a3" value="Конец операции Резидент"><label for="q2a3">«Конец операции "Резидент"»</label></div>
+                 <div class="answer"><input type="radio" name="q2" id="q2a4" value="Личная жизнь директора"><label for="q2a4">«Личная жизнь директора»</label></div>
+             </div>
+             <div class="feedback"></div>
+        </div>
+
+        <div class="quiz-step" data-question="3" data-type="match-metro" data-answer='{"spb":"Санкт-Петербург","msk":"Москва","kazan":"Казань","ekb":"Екатеринбург","minsk":"Минск"}' 
+             data-explanation="Отлично! Вы хорошо разбираетесь в географии метрополитенов."
+             data-explanation-wrong="Есть ошибки, но ничего страшного! Правильные пары были подсвечены зеленым. Теперь вы знаете больше!">
+            <div class="question-title">Фильм «Прорыв» (1986) повествует о трудностях строительства метро. Попробуйте сопоставить карты метрополитена с городами, в которых они находятся.</div>
+            <div class="match-container">
+                <div class="match-item">
+                    <img src="img/metro_spb.webp" alt="Карта метро 1" loading="lazy" decoding="async" width="400" height="300" onerror="this.onerror=null;this.src='https://placehold.co/400x300/eee/333?text=Карта+1';">
+                    <select class="match-select" data-map="spb"><option value="">Выберите город...</option></select>
+                </div>
+                <div class="match-item">
+                    <img src="img/metro_msk.webp" alt="Карта метро 2" loading="lazy" decoding="async" width="400" height="300" onerror="this.onerror=null;this.src='https://placehold.co/400x300/eee/333?text=Карта+2';">
+                    <select class="match-select" data-map="msk"><option value="">Выберите город...</option></select>
+                </div>
+                <div class="match-item">
+                    <img src="img/metro_kazan.webp" alt="Карта метро 3" loading="lazy" decoding="async" width="400" height="300" onerror="this.onerror=null;this.src='https://placehold.co/400x300/eee/333?text=Карта+3';">
+                    <select class="match-select" data-map="kazan"><option value="">Выберите город...</option></select>
+                </div>
+                <div class="match-item">
+                    <img src="img/metro_ekb.webp" alt="Карта метро 4" loading="lazy" decoding="async" width="400" height="300" onerror="this.onerror=null;this.src='https://placehold.co/400x300/eee/333?text=Карта+4';">
+                    <select class="match-select" data-map="ekb"><option value="">Выберите город...</option></select>
+                </div>
+                <div class="match-item">
+                    <img src="img/metro_minsk.webp" alt="Карта метро 5" loading="lazy" decoding="async" width="400" height="300" onerror="this.onerror=null;this.src='https://placehold.co/400x300/eee/333?text=Карта+5';">
+                    <select class="match-select" data-map="minsk"><option value="">Выберите город...</option></select>
+                </div>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <div class="quiz-step" data-question="4" data-type="text" data-answer="Зимняя вишня" 
+             data-explanation="Точно! Это знаменитая трилогия «Зимняя вишня», заключительная часть которой снималась в Красногвардейском районе."
+             data-explanation-wrong="Почти! Правильный ответ - «Зимняя вишня».">
+            <div class="question-title">Скрестив эти два образа, вы получите название известной мелодрамы-трилогии. Что это за фильм?</div>
+            <div class="image-rebus">
+                <img src="img/winter.webp" alt="Зима" loading="lazy" decoding="async" width="200" height="200" onerror="this.onerror=null;this.src='https://placehold.co/200x200/aae/fff?text=Зима';">
+                <span>+</span>
+                <img src="img/cherry.webp" alt="Вишня" loading="lazy" decoding="async" width="200" height="200" onerror="this.onerror=null;this.src='https://placehold.co/200x200/f8b/fff?text=Вишня';">
+            </div>
+            <input type="text" class="text-input" placeholder="Введите название фильма...">
+            <div class="feedback"></div>
+        </div>
+        
+        <div class="quiz-step" data-question="5" data-type="radio" data-answer="Г >400 мостов" 
+             data-explanation="Правильно! В Санкт-Петербурге более 400 мостов, а если считать и небольшие мосты на территориях промзон, их число приближается к 800."
+             data-explanation-wrong="Не угадали. Правильный ответ: в Санкт-Петербурге более 400 мостов! А с учетом промышленных территорий - около 800.">
+             <div class="question-title">В фильме «Мама вышла замуж» (1969) есть панорамный вид на мост Александра Невского. А как вы думаете, сколько всего мостов в Петербурге?</div>
+             <div class="answers">
+                 <div class="answer"><input type="radio" name="q5" id="q5a1" value="А < 100 мостов"><label for="q5a1">А &lt; 100 мостов</label></div>
+                 <div class="answer"><input type="radio" name="q5" id="q5a2" value="Б 100-200 мостов"><label for="q5a2">Б 100-200 мостов</label></div>
+                 <div class="answer"><input type="radio" name="q5" id="q5a3" value="В 200-350 мостов"><label for="q5a3">В 200-350 мостов</label></div>
+                 <div class="answer"><input type="radio" name="q5" id="q5a4" value="Г >400 мостов"><label for="q5a4">Г &gt; 400 мостов</label></div>
+             </div>
+             <div class="feedback"></div>
+        </div>
+
+        <div class="quiz-step" data-question="6" data-type="text" data-answer="Андрейка" 
+             data-explanation="Верно! Это фильм «Андрейка» 1958 года."
+             data-explanation-wrong="Неверно. Фильм по названию из песни группы «Жуки» - «Андрейка» (1958 г.).">
+             <div class="question-title">Вспоминая песню группы «Жуки» «Батарейка», в третьем куплете упоминается имя героя. Такое же название для фильма выбрал Николай Лебедев в 1958 году. О каком фильме идёт речь?</div>
+             <input type="text" class="text-input" placeholder="Введите название фильма...">
+             <div class="feedback"></div>
+        </div>
+
+        <div class="quiz-step" data-question="7" data-type="text" data-answer="Необыкновенные приключения Карика и Вали" 
+             data-explanation="Именно так! Этот детский фильм по книге Яна Ларри снимали на Большеохтинском проспекте."
+             data-explanation-wrong="Близко, но нет. Правильное название - «Необыкновенные приключения Карика и Вали».">
+            <div class="question-title">Большеохтинский проспект стал местом съёмки фильма по книге Яна Ларри. Вспомните название этого фильма, используя подсказки.</div>
+            <div class="image-rebus">
+                <img src="img/dragonfly.webp" alt="Стрекоза" loading="lazy" decoding="async" width="200" height="200" onerror="this.onerror=null;this.src='https://placehold.co/200x200/8c9/fff?text=Стрекоза';">
+                <img src="img/potion.webp" alt="Зелье" loading="lazy" decoding="async" width="200" height="200" onerror="this.onerror=null;this.src='https://placehold.co/200x200/c8e/fff?text=Зелье';">
+                <img src="img/kids.webp" alt="Дети" loading="lazy" decoding="async" width="200" height="200" onerror="this.onerror=null;this.src='https://placehold.co/200x200/f9d/fff?text=Дети';">
+            </div>
+            <input type="text" class="text-input" placeholder="Введите название фильма...">
+            <div class="feedback"></div>
+        </div>
+        
+        <div class="quiz-step" data-question="8" data-type="match-quotes" data-answer='{"q1":"молодым","q2":"стоит на месте","q3":"родные люди","q4":"она не такая уж простая"}' 
+             data-explanation="Отличная память! Это классические цитаты из любимого многими фильма «Старший сын»."
+             data-explanation-wrong="Не все цитаты сошлись. Правильные варианты подсвечены зеленым. Это классика из фильма «Старший сын».">
+             <div class="question-title">Фильм «Старший сын» (1975) разошёлся на цитаты. Попробуйте вспомнить продолжение каждой из представленных ниже фраз.</div>
+             <div class="quotes-container">
+                <div class="quote-item">
+                    <div class="quote-start">Ты думаешь, я тебя не понимаю? Я ведь тоже был...</div>
+                    <select class="match-select" data-quote="q1"><option value="">Выберите продолжение...</option></select>
+                </div>
+                <div class="quote-item">
+                    <div class="quote-start">Жизнь не прощает тех, кто...</div>
+                    <select class="match-select" data-quote="q2"><option value="">Выберите продолжение...</option></select>
+                </div>
+                <div class="quote-item">
+                    <div class="quote-start">Мы живём, как будто друг друга не знаем... А ведь мы --...</div>
+                    <select class="match-select" data-quote="q3"><option value="">Выберите продолжение...</option></select>
+                </div>
+                 <div class="quote-item">
+                    <div class="quote-start">Всё у вас, молодых, легко и просто… А жизнь-то...</div>
+                    <select class="match-select" data-quote="q4"><option value="">Выберите продолжение...</option></select>
+                </div>
+             </div>
+             <div class="feedback"></div>
+        </div>
+        
+        <div class="quiz-step" data-question="9" data-type="text" data-answer="Циники" 
+             data-explanation="Правильно! Это фильм «Циники» 1991 года, снятый по одноимённому роману Анатолия Мариенгофа."
+             data-explanation-wrong="Неправильно. Ребус загадывал фильм «Циники» (1991 г.).">
+             <div class="question-title">На Большеохтинском мосту, помимо "Шерлока Холмса", снимали эпизод ещё одного фильма в 1991 году. Отгадайте его название по ребусу.</div>
+             <div class="image-rebus">
+                 <img src="img/rebus.webp" alt="Ребус" loading="lazy" decoding="async" width="300" height="200" onerror="this.onerror=null;this.src='https://placehold.co/300x200/eee/333?text=Ребус';">
+             </div>
+             <input type="text" class="text-input" placeholder="Введите название фильма...">
+             <div class="feedback"></div>
+        </div>
+        
+        <div class="quiz-step" data-question="10" data-type="image" data-answer="karik_vali_correct.webp" 
+             data-explanation="Именно этот кадр из фильма «Необыкновенные приключения Карика и Вали»!"
+             data-explanation-wrong="Не этот кадр. Правильный вариант подсвечен зеленым. Это кадр из «Необыкновенных приключений Карика и Вали».">
+            <div class="question-title">На каком кадре изображён фрагмент фильма «Необыкновенные приключения Карика и Вали»?</div>
+            <div class="image-options">
+                <img src="img/karik_vali_correct.webp" alt="Кадр 1" data-value="karik_vali_correct.webp" loading="lazy" decoding="async" width="150" height="150" onerror="this.onerror=null;this.src='https://placehold.co/150x150/ccc/fff?text=Кадр+1';">
+                <img src="img/frame_wrong_1.webp" alt="Кадр 2" data-value="frame_wrong_1.webp" loading="lazy" decoding="async" width="150" height="150" onerror="this.onerror=null;this.src='https://placehold.co/150x150/ccc/fff?text=Кадр+2';">
+                <img src="img/frame_wrong_2.webp" alt="Кадр 3" data-value="frame_wrong_2.webp" loading="lazy" decoding="async" width="150" height="150" onerror="this.onerror=null;this.src='https://placehold.co/150x150/ccc/fff?text=Кадр+3';">
+                <img src="img/frame_wrong_3.webp" alt="Кадр 4" data-value="frame_wrong_3.webp" loading="lazy" decoding="async" width="150" height="150" onerror="this.onerror=null;this.src='https://placehold.co/150x150/ccc/fff?text=Кадр+4';">
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <div class="quiz-step" data-question="11" data-type="radio" data-answer="Приключения Шерлока Холмса и доктора Ватсона: Сокровища Агры" 
+             data-explanation="Совершенно верно! В фильме «Приключения Шерлока Холмса и доктора Ватсона: Сокровища Агры» Большеохтинский мост изображал Тауэрский мост в Лондоне."
+             data-explanation-wrong="Неверно. Роль Тауэрского моста в Лондоне «сыграл» Большеохтинский мост в фильме «Приключения Шерлока Холмса и доктора Ватсона: Сокровища Агры».">
+             <div class="question-title">В каком известном советском фильме Большеохтинский мост «сыграл роль» Тауэрского моста в Лондоне?</div>
+             <div class="answers">
+                 <div class="answer"><input type="radio" name="q11" id="q11a1" value="Старик Хоттабыч"><label for="q11a1">«Старик Хоттабыч»</label></div>
+                 <div class="answer"><input type="radio" name="q11" id="q11a2" value="Приключения Шерлока Холмса и доктора Ватсона: Сокровища Агры"><label for="q11a2">«Приключения Шерлока Холмса и доктора Ватсона: Сокровища Агры»</label></div>
+                 <div class="answer"><input type="radio" name="q11" id="q11a3" value="Золотой телёнок"><label for="q11a3">«Золотой телёнок»</label></div>
+                 <div class="answer"><input type="radio" name="q11" id="q11a4" value="Гардемарины, вперёд!"><label for="q11a4">«Гардемарины, вперёд!»</label></div>
+             </div>
+             <div class="feedback"></div>
+        </div>
+    </div>
+
+    <div id="results" class="quiz-step">
+        <img id="result-image" src="" alt="Результаты квиза" loading="lazy" decoding="async" width="800" height="450" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 800px">
+        <h2>Ваш результат!</h2>
+        <div id="score-display"></div>
+        <h3 id="result-title"></h3>
+        <p id="result-description"></p>
+        <div class="results-actions">
+            <a href="https://krasnakarta.ru/excursions/detail/po-sledam-lenfilma/" target="_blank" class="action-btn">По следам Ленфильма</a>
+            <button id="restart-quiz-btn" class="action-btn" style="background-color: var(--secondary-color);">Пройти ещё раз</button>
+        </div>
+    </div>
+
+    <div class="quiz-navigation">
+        <button id="prev-btn" class="nav-btn" style="background-color: var(--secondary-color);">Назад</button>
+        <button id="nav-btn" class="nav-btn" disabled>Проверить</button>
+    </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+    import { getFirestore, doc, runTransaction, setDoc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCcam04I594Zl-t83DGNH4eIcTBynJZweQ",
+        authDomain: "my-quiz-app-7e68f.firebaseapp.com",
+        projectId: "my-quiz-app-7e68f",
+        storageBucket: "my-quiz-app-7e68f.appspot.com",
+        messagingSenderId: "1037037283720",
+        appId: "1:1037037283720:web:1f5b05864587f3820e723d"
+    };
+
+    let db;
+    let auth;
+    const LOCAL_STORAGE_UID_KEY = 'quiz_uid';
+    try {
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+    } catch (e) {
+        console.error("Ошибка инициализации Firebase. Убедитесь, что вы правильно вставили объект firebaseConfig.", e);
+    }
+    
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const startQuizBtn = document.getElementById('start-quiz-btn');
+    const quizContainer = document.getElementById('quiz-container');
+    const quizHeader = document.querySelector('.quiz-header');
+    const quizBody = document.getElementById('quiz-body');
+    const steps = Array.from(quizBody.querySelectorAll('.quiz-step'));
+    const navBtn = document.getElementById('nav-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const navigationContainer = document.querySelector('.quiz-navigation');
+    const resultsContainer = document.getElementById('results');
+    const restartBtn = document.getElementById('restart-quiz-btn');
+    const resultImage = document.getElementById('result-image');
+    const progressCurrent = document.getElementById('progress-current');
+    const progressTotal = document.getElementById('progress-total');
+    
+    let currentStep = 0;
+    let viewState = 'question';
+    const userAnswers = {};
+    let uniqueUserId = null; // fallback для локального uid
+    let authUserId = null;   // uid из Firebase Auth
+    function updateProgress() {
+        if (progressCurrent) progressCurrent.textContent = String(currentStep + 1);
+        if (progressTotal) progressTotal.textContent = String(steps.length);
+        if (prevBtn) prevBtn.disabled = currentStep === 0;
+    }
+
+
+    const normalizeText = (text) => {
+        if (typeof text !== 'string') return '';
+        return text.trim().toLowerCase().replace(/[\s.,!"«»-]/g, '');
+    };
+    
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function initMetroQuestion() {
+        const step = document.querySelector('[data-type="match-metro"]');
+        if (!step) return;
+        const selects = step.querySelectorAll('select');
+        const answers = JSON.parse(step.dataset.answer);
+        const cities = Object.values(answers);
+        shuffleArray(cities);
+        
+        selects.forEach(select => {
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                select.appendChild(option);
+            });
+        });
+    }
+    
+    function initQuotesQuestion() {
+        const step = document.querySelector('[data-type="match-quotes"]');
+        if (!step) return;
+        const selects = step.querySelectorAll('select');
+        const answers = JSON.parse(step.dataset.answer);
+        const endings = Object.values(answers);
+        shuffleArray(endings);
+        
+        selects.forEach(select => {
+            endings.forEach(ending => {
+                const option = document.createElement('option');
+                option.value = ending;
+                option.textContent = `...${ending}.`;
+                select.appendChild(option);
+            });
+        });
+    }
+
+    const checkAnswerProvided = () => {
+        const step = steps[currentStep];
+        const type = step.dataset.type;
+        let isAnswered = false;
+
+        if (type === 'radio') {
+            isAnswered = !!step.querySelector('input[type="radio"]:checked');
+        } else if (type === 'image') {
+            isAnswered = !!step.querySelector('img.selected');
+        } else if (type === 'text') {
+            isAnswered = step.querySelector('input[type="text"]').value.trim() !== '';
+        } else if (type === 'match-metro' || type === 'match-quotes') {
+            const selects = step.querySelectorAll('select');
+            isAnswered = Array.from(selects).every(s => s.value !== '');
+        }
+        navBtn.disabled = !isAnswered;
+    };
+
+    const handleNav = () => {
+        if (viewState === 'question') {
+            checkAnswer();
+        } else {
+            showNextQuestion();
+        }
+    };
+
+    const checkAnswer = () => {
+        const step = steps[currentStep];
+        step.classList.add('answered');
+        viewState = 'feedback';
+        navBtn.disabled = false;
+        
+        if (currentStep < steps.length - 1) {
+            navBtn.textContent = 'Далее';
+        } else {
+            navBtn.textContent = 'Узнать результат';
+        }
+
+        const questionNumber = step.dataset.question;
+        const explanation = step.dataset.explanation;
+        const explanationWrong = step.dataset.explanationWrong;
+        const feedbackEl = step.querySelector('.feedback');
+        let isCorrect = false;
+
+        const type = step.dataset.type;
+        const correctAnswer = step.dataset.answer;
+
+        switch (type) {
+            case 'radio': {
+                const selectedRadio = step.querySelector('input[type="radio"]:checked');
+                isCorrect = normalizeText(selectedRadio.value) === normalizeText(correctAnswer);
+                const correctLabel = step.querySelector(`input[value="${correctAnswer}"]`).parentElement;
+                correctLabel.classList.add('correct');
+                if (!isCorrect) {
+                    selectedRadio.parentElement.classList.add('incorrect');
+                }
+                break;
+            }
+            case 'text': {
+                const textInput = step.querySelector('input[type="text"]');
+                isCorrect = normalizeText(textInput.value) === normalizeText(correctAnswer);
+                textInput.style.borderColor = isCorrect ? 'var(--correct-color)' : 'var(--incorrect-color)';
+                textInput.style.backgroundColor = isCorrect ? '#eaf6ec' : '#fbebec';
+                break;
+            }
+            case 'image': {
+                const selectedImage = step.querySelector('img.selected');
+                isCorrect = normalizeText(selectedImage.dataset.value) === normalizeText(correctAnswer);
+                const correctImage = step.querySelector(`img[data-value="${correctAnswer}"]`);
+                correctImage.classList.add('correct');
+                if (!isCorrect) {
+                    selectedImage.classList.add('incorrect');
+                }
+                break;
+            }
+            case 'match-metro':
+            case 'match-quotes': {
+                const answers = JSON.parse(correctAnswer);
+                const selects = step.querySelectorAll('select');
+                let allCorrect = true;
+                selects.forEach(select => {
+                    const key = select.dataset.map || select.dataset.quote;
+                    const isSelectCorrect = normalizeText(select.value) === normalizeText(answers[key]);
+                    select.style.borderColor = isSelectCorrect ? 'var(--correct-color)' : 'var(--incorrect-color)';
+                    if (!isSelectCorrect) allCorrect = false;
+                });
+                isCorrect = allCorrect;
+                break;
+            }
+        }
+        
+        userAnswers[questionNumber] = isCorrect;
+        
+        if (isCorrect) {
+            feedbackEl.textContent = explanation;
+        } else {
+            feedbackEl.textContent = explanationWrong;
+        }
+        feedbackEl.classList.add(isCorrect ? 'correct' : 'incorrect');
+        feedbackEl.style.display = 'block';
+    };
+
+    const showNextQuestion = () => {
+        if (currentStep >= steps.length - 1) {
+            showResults();
+            return;
+        }
+
+        steps[currentStep].classList.remove('active');
+        currentStep++;
+        steps[currentStep].classList.add('active');
+
+        viewState = 'question';
+        navBtn.textContent = 'Проверить';
+        checkAnswerProvided();
+        updateProgress();
+    };
+    
+    const showResults = async () => {
+        quizHeader.style.display = 'none';
+        quizBody.style.display = 'none';
+        navigationContainer.style.display = 'none';
+        resultsContainer.style.display = 'block';
+        resultsContainer.classList.add('active');
+        
+        const score = Object.values(userAnswers).filter(Boolean).length;
+        const total = Object.keys(userAnswers).length;
+        const incorrect = total - score;
+        
+        const resultTitle = document.getElementById('result-title');
+        const resultDescription = document.getElementById('result-description');
+        const scoreDisplay = document.getElementById('score-display');
+        
+        scoreDisplay.innerHTML = `Правильных ответов: <span class="correct">${score}</span> из ${total}. Ошибок: <span class="incorrect">${incorrect}</span>.`;
+        
+        if (score <= 4) {
+            resultTitle.textContent = "Новичок в мире кино";
+            resultDescription.textContent = "Вы только начинаете свой путь! Это отличный повод открыть для себя классику советского кино и взглянуть на знакомые улицы под другим углом.";
+            resultImage.src = 'img/pic1.webp';
+        } else if (score <= 8) {
+            resultTitle.textContent = "Уверенный киноман";
+            resultDescription.textContent = "Отличный результат! Вы хорошо ориентируетесь в советском кинематографе и помните знаковые цитаты. Еще немного, и вы сможете проводить экскурсии!";
+            resultImage.src = 'img/pic2.webp';
+        } else {
+            resultTitle.textContent = "Настоящий знаток и краевед";
+            resultDescription.textContent = "Браво! Ваши знания поражают. Вы — настоящий эксперт, который с легкостью ориентируется в фильмографии и узнает районы города по одному кадру. Поздравляем!";
+            resultImage.src = 'img/pic3.webp';
+        }
+
+        if (db) {
+            const statsRootRef = doc(db, "quizStats", "completions");
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const counterDoc = await transaction.get(statsRootRef);
+                    if (!counterDoc.exists()) {
+                        transaction.set(statsRootRef, { totalCompletions: 1, count: 1, uniqueUsers: 0 });
+                    } else {
+                        const data = counterDoc.data() || {};
+                        const previous = (data.totalCompletions ?? data.count ?? 0);
+                        const newTotal = previous + 1;
+                        transaction.update(statsRootRef, { totalCompletions: newTotal, count: newTotal });
+                    }
+                });
+            } catch (e) {
+                console.error("Ошибка обновления счетчика: ", e);
+            }
+
+            try {
+                const attemptsRef = collection(db, 'quizAttempts');
+                await addDoc(attemptsRef, {
+                    uid: uniqueUserId || 'anon',
+                    score,
+                    total,
+                    incorrect,
+                    createdAt: serverTimestamp(),
+                    userAgent: navigator.userAgent,
+                });
+            } catch (e) {
+                console.error('Ошибка записи попытки: ', e);
+            }
+        }
+    };
+
+    navBtn.addEventListener('click', handleNav);
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (currentStep === 0) return;
+            steps[currentStep].classList.remove('active');
+            currentStep--;
+            steps[currentStep].classList.add('active');
+            viewState = 'question';
+            navBtn.textContent = 'Проверить';
+            checkAnswerProvided();
+            updateProgress();
+        });
+    }
+    quizBody.addEventListener('click', (e) => {
+        const currentStepEl = steps[currentStep];
+        if (!currentStepEl || currentStepEl.classList.contains('answered')) return;
+
+        if (e.target.tagName === 'IMG' && e.target.closest('.image-options')) {
+             currentStepEl.querySelectorAll('.image-options img').forEach(i => i.classList.remove('selected'));
+             e.target.classList.add('selected');
+             checkAnswerProvided();
+        } else if (e.target.closest('.answer')) {
+            const answerDiv = e.target.closest('.answer');
+            currentStepEl.querySelectorAll('.answer').forEach(a => a.classList.remove('selected'));
+            answerDiv.classList.add('selected');
+            answerDiv.querySelector('input[type="radio"]').checked = true;
+            checkAnswerProvided();
+        }
+    });
+    quizBody.addEventListener('input', checkAnswerProvided);
+    
+    startQuizBtn.addEventListener('click', () => {
+        welcomeScreen.style.display = 'none';
+        quizContainer.style.display = 'block';
+    });
+    
+    restartBtn.addEventListener('click', () => {
+        location.reload();
+    });
+    
+    document.addEventListener('DOMContentLoaded', async () => {
+        initMetroQuestion();
+        initQuotesQuestion();
+        checkAnswerProvided();
+        updateProgress();
+
+        // aria-live для всех блоков фидбека
+        document.querySelectorAll('.feedback').forEach(el => {
+            el.setAttribute('aria-live', 'polite');
+        });
+
+        // клавиатурные сокращения: Enter для "Проверить/Далее", стрелка влево — "Назад"
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                if (!navBtn.disabled) handleNav();
+            } else if (e.key === 'ArrowLeft') {
+                if (prevBtn && !prevBtn.disabled) prevBtn.click();
+            }
+        });
+
+        // Анонимная авторизация + fallback localStorage
+        try {
+            if (auth) {
+                onAuthStateChanged(auth, async (user) => {
+                    try {
+                        if (!user) {
+                            await signInAnonymously(auth);
+                            return; // дождемся следующего срабатывания onAuthStateChanged
+                        }
+                        authUserId = user.uid;
+                        // синхронизируем локальный uid для обратной совместимости
+                        uniqueUserId = localStorage.getItem(LOCAL_STORAGE_UID_KEY) || authUserId;
+                        localStorage.setItem(LOCAL_STORAGE_UID_KEY, uniqueUserId);
+
+                        // регистрация пользователя в коллекции quizUsers
+                        const userRef = doc(db, 'quizUsers', authUserId);
+                        const existing = await getDoc(userRef);
+                        if (!existing.exists()) {
+                            await setDoc(userRef, {
+                                createdAt: serverTimestamp(),
+                                userAgent: navigator.userAgent,
+                                anon: true,
+                            });
+                            // инкремент уникальных
+                            const statsRootRef = doc(db, "quizStats", "completions");
+                            await runTransaction(db, async (transaction) => {
+                                const counterDoc = await transaction.get(statsRootRef);
+                                if (!counterDoc.exists()) {
+                                    transaction.set(statsRootRef, { totalCompletions: 0, uniqueUsers: 1 });
+                                } else {
+                                    const newUnique = (counterDoc.data().uniqueUsers || 0) + 1;
+                                    transaction.update(statsRootRef, { uniqueUsers: newUnique });
+                                }
+                            });
+                        }
+                    } catch (err) {
+                        console.error('Auth init error: ', err);
+                    }
+                });
+            } else {
+                // Fallback: без Auth используем локальный uid
+                uniqueUserId = localStorage.getItem(LOCAL_STORAGE_UID_KEY);
+                if (!uniqueUserId) {
+                    uniqueUserId = `uid_${Math.random().toString(36).slice(2)}_${Date.now()}`;
+                    localStorage.setItem(LOCAL_STORAGE_UID_KEY, uniqueUserId);
+                }
+            }
+        } catch (e) {
+            console.error('Ошибка инициализации уникального пользователя: ', e);
+        }
+    });
+
+</script>
+
+</body>
+</html>
+
