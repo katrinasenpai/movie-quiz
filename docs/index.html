@@ -270,7 +270,6 @@
                     <button id="export-csv-btn" class="action-btn" style="background-color: var(--correct-color);">Экспорт CSV</button>
                     <button id="export-json-btn" class="action-btn" style="background-color: var(--secondary-color);">Экспорт JSON</button>
                     <button id="draw-winner-btn" class="action-btn" style="background-color: #ff6b35;">Провести розыгрыш</button>
-                    <button id="clear-data-btn" class="action-btn" style="background-color: #dc3545;">🗑️ Очистить все данные</button>
                     <button id="close-admin-btn" class="action-btn" style="background-color: #6c757d;">Закрыть</button>
                 </div>
         
@@ -447,44 +446,6 @@
         console.log('========================');
     };
     
-    async function clearAllData() {
-        if (!db) {
-            alert('Firebase не инициализирован');
-            return;
-        }
-
-        // Проверяем GitHub авторизацию
-        const isGitHubAuth = await checkGitHubAuth();
-        if (!isGitHubAuth) {
-            alert('❌ Доступ к удалению данных разрешен только авторизованным пользователям GitHub.');
-            return;
-        }
-
-        if (!confirm('⚠️ ВНИМАНИЕ! Это действие удалит ВСЕ данные из базы. Продолжить?')) {
-            return;
-        }
-
-        try {
-            const attemptsRef = collection(db, 'quizAttempts');
-            const querySnapshot = await getDocs(attemptsRef);
-            
-            const deletePromises = [];
-            querySnapshot.forEach((doc) => {
-                deletePromises.push(deleteDoc(doc.ref));
-            });
-
-            await Promise.all(deletePromises);
-            
-            // Очищаем локальный массив
-            allParticipants = [];
-            updateParticipantsDisplay();
-            
-            alert(`✅ Удалено ${deletePromises.length} записей из базы данных`);
-        } catch (error) {
-            console.error('Ошибка удаления данных:', error);
-            alert('Ошибка при удалении данных');
-        }
-    }
 
     async function loadParticipants() {
         if (!db) {
@@ -922,7 +883,6 @@
     const exportCsvBtn = document.getElementById('export-csv-btn');
     const exportJsonBtn = document.getElementById('export-json-btn');
     const drawWinnerBtn = document.getElementById('draw-winner-btn');
-    const clearDataBtn = document.getElementById('clear-data-btn');
     const closeAdminBtn = document.getElementById('close-admin-btn');
 
     if (adminToggleBtn) {
@@ -963,9 +923,6 @@
         drawWinnerBtn.addEventListener('click', drawWinner);
     }
 
-    if (clearDataBtn) {
-        clearDataBtn.addEventListener('click', clearAllData);
-    }
 
     if (closeAdminBtn) {
         closeAdminBtn.addEventListener('click', () => {
