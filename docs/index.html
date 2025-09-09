@@ -296,13 +296,21 @@
 
 <!-- Конфигурация (загружается первым) -->
 <script src="config.js"></script>
+<script src="config.github.js"></script>
 <script>
     // Проверяем загрузку конфигурации
     console.log('Конфигурация загружена:', !!window.ADMIN_CONFIG);
     if (window.ADMIN_CONFIG) {
         console.log('Пароль установлен:', window.ADMIN_CONFIG.password);
     } else {
-        console.error('❌ Конфигурация не загружена! Проверьте файл config.js');
+        console.error('❌ Конфигурация не загружена! Проверьте файлы конфигурации');
+        // Последний fallback - устанавливаем пароль по умолчанию
+        window.ADMIN_CONFIG = {
+            password: 'admin123', // Временный пароль по умолчанию
+            maxLoginAttempts: 3,
+            sessionTimeout: 30 * 60 * 1000
+        };
+        console.log('⚠️ Использован временный пароль по умолчанию');
     }
 </script>
 
