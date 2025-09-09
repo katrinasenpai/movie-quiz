@@ -395,6 +395,41 @@ label {
     font-style: italic;
 }
 
+.lottery-instructions {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.lottery-instructions p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.lottery-instructions p:first-child {
+    margin-top: 0;
+}
+
+.lottery-instructions p:last-child {
+    margin-bottom: 0;
+}
+
+.vk-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    word-break: break-all;
+}
+
+.vk-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
 /* Стили для админ-панели */
 .admin-panel {
     position: fixed;
@@ -708,6 +743,15 @@ label {
         align-self: center;
     }
     
+    .lottery-instructions {
+        padding: 0.75rem;
+        margin-top: 0.75rem;
+    }
+    
+    .lottery-instructions p {
+        font-size: 0.85rem;
+    }
+    
     /* Адаптив для админ-панели */
     .admin-content {
         padding: 1rem;
@@ -781,6 +825,15 @@ label {
     #lottery-number {
         font-size: 0.9rem;
         padding: 0.4rem 0.6rem;
+    }
+    
+    .lottery-instructions {
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+    }
+    
+    .lottery-instructions p {
+        font-size: 0.8rem;
     }
 }
 
