@@ -20,3 +20,6 @@ build/
 # Firebase emulator/state
 .firebase/
 .firestore/
+
+# Конфигурационные файлы с паролями
+docs/config.js

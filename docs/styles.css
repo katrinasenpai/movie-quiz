@@ -656,7 +656,7 @@ label {
     .welcome-screen, .quiz-container {
         width: 95%;
         margin: 0 auto;
-        max-height: calc(100vh - 20px);
+        min-height: calc(100vh - 20px);
         display: flex;
         flex-direction: column;
     }
@@ -671,7 +671,11 @@ label {
     .welcome-content p { font-size: 1rem; }
     .quiz-header { padding: 1.25rem; }
     .quiz-header h1 { font-size: 1.5rem; }
-    .quiz-step { padding: 1.25rem; }
+    .quiz-step { 
+        padding: 1.25rem; 
+        overflow-y: auto;
+        flex: 1;
+    }
     .question-title { font-size: 1.25rem; }
     .image-options { grid-template-columns: repeat(2, 1fr); }
     .image-options img { height: 120px; }
@@ -769,6 +773,13 @@ label {
     .quiz-header h1 { font-size: 1.35rem; }
     .question-title { font-size: 1.1rem; }
     .image-options img { height: 110px; }
+    
+    /* Обеспечиваем прокрутку на очень маленьких экранах */
+    .quiz-step { 
+        padding: 1rem; 
+        overflow-y: auto;
+        flex: 1;
+    }
     
     /* Дополнительные исправления для номера розыгрыша на очень маленьких экранах */
     .lottery-number-container {
