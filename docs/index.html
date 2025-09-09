@@ -233,6 +233,22 @@
         <div id="score-display"></div>
         <h3 id="result-title"></h3>
         <p id="result-description"></p>
+        
+        <!-- Блок с номером участника розыгрыша -->
+        <div id="lottery-number-container" class="lottery-number-container">
+            <h3>Номер для участия в розыгрыше</h3>
+            <div class="lottery-number-display">
+                <span id="lottery-number">Загрузка...</span>
+                <button id="copy-number-btn" class="copy-btn" title="Скопировать номер">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+            </div>
+            <p class="lottery-number-info">Сохраните этот номер для участия в розыгрыше призов!</p>
+        </div>
+        
         <div class="results-actions">
             <a href="https://krasnakarta.ru/excursions/detail/po-sledam-lenfilma/" target="_blank" class="action-btn">По следам Ленфильма</a>
             <button id="restart-quiz-btn" class="action-btn" style="background-color: var(--secondary-color);">Пройти ещё раз</button>
@@ -245,10 +261,42 @@
     </div>
 </div>
 
+<!-- Админ-панель для просмотра номеров участников -->
+<div id="admin-panel" class="admin-panel" style="display: none;">
+    <div class="admin-content">
+        <h2>Админ-панель - Номера участников розыгрыша</h2>
+        <div class="admin-controls">
+            <button id="load-numbers-btn" class="action-btn">Загрузить номера</button>
+            <button id="export-csv-btn" class="action-btn" style="background-color: var(--correct-color);">Экспорт CSV</button>
+            <button id="export-json-btn" class="action-btn" style="background-color: var(--secondary-color);">Экспорт JSON</button>
+            <button id="draw-winner-btn" class="action-btn" style="background-color: #ff6b35;">Провести розыгрыш</button>
+            <button id="close-admin-btn" class="action-btn" style="background-color: #dc3545;">Закрыть</button>
+        </div>
+        
+        <div class="stats-info">
+            <p>Всего участников: <span id="total-participants">0</span></p>
+            <p>Уникальных номеров: <span id="unique-numbers">0</span></p>
+        </div>
+        
+        <div class="numbers-list-container">
+            <h3>Список номеров участников:</h3>
+            <div id="numbers-list" class="numbers-list"></div>
+        </div>
+        
+        <div id="winner-display" class="winner-display" style="display: none;">
+            <h3>🎉 Победитель розыгрыша:</h3>
+            <div class="winner-number"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Кнопка для открытия админ-панели (скрытая, доступна через консоль) -->
+<button id="admin-toggle-btn" class="admin-toggle-btn" style="display: none;">Админ</button>
+
 <!-- Firebase SDK -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-    import { getFirestore, doc, runTransaction, setDoc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+    import { getFirestore, doc, runTransaction, setDoc, getDoc, collection, addDoc, serverTimestamp, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
     import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 
     const firebaseConfig = {
@@ -291,10 +339,135 @@
     const userAnswers = {};
     let uniqueUserId = null; // fallback для локального uid
     let authUserId = null;   // uid из Firebase Auth
+    let lotteryNumber = null; // номер участника розыгрыша
+    let allParticipants = []; // массив всех участников для админ-панели
     function updateProgress() {
         if (progressCurrent) progressCurrent.textContent = String(currentStep + 1);
         if (progressTotal) progressTotal.textContent = String(steps.length);
         if (prevBtn) prevBtn.disabled = currentStep === 0;
+    }
+
+    // Функция генерации уникального номера участника (короткий формат)
+    function generateLotteryNumber() {
+        const timestamp = Date.now().toString(36).slice(-4).toUpperCase();
+        const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+        return `${timestamp}${randomPart}`;
+    }
+
+    // Функции для админ-панели
+    async function loadParticipants() {
+        if (!db) {
+            alert('Firebase не инициализирован');
+            return;
+        }
+
+        try {
+            const attemptsRef = collection(db, 'quizAttempts');
+            const q = query(attemptsRef, orderBy('createdAt', 'desc'));
+            const querySnapshot = await getDocs(q);
+            
+            allParticipants = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.lotteryNumber) {
+                    allParticipants.push({
+                        id: doc.id,
+                        lotteryNumber: data.lotteryNumber,
+                        score: data.score,
+                        total: data.total,
+                        createdAt: data.createdAt,
+                        uid: data.uid
+                    });
+                }
+            });
+
+            updateParticipantsDisplay();
+        } catch (error) {
+            console.error('Ошибка загрузки участников:', error);
+            alert('Ошибка загрузки данных');
+        }
+    }
+
+    function updateParticipantsDisplay() {
+        const totalParticipants = document.getElementById('total-participants');
+        const uniqueNumbers = document.getElementById('unique-numbers');
+        const numbersList = document.getElementById('numbers-list');
+
+        if (totalParticipants) totalParticipants.textContent = allParticipants.length;
+        
+        const uniqueNumbersSet = new Set(allParticipants.map(p => p.lotteryNumber));
+        if (uniqueNumbers) uniqueNumbers.textContent = uniqueNumbersSet.size;
+
+        if (numbersList) {
+            numbersList.innerHTML = '';
+            allParticipants.forEach((participant, index) => {
+                const participantDiv = document.createElement('div');
+                participantDiv.className = 'participant-item';
+                participantDiv.innerHTML = `
+                    <span class="participant-number">${participant.lotteryNumber}</span>
+                    <span class="participant-score">${participant.score}/${participant.total}</span>
+                    <span class="participant-date">${new Date(participant.createdAt?.seconds * 1000).toLocaleString('ru-RU')}</span>
+                `;
+                numbersList.appendChild(participantDiv);
+            });
+        }
+    }
+
+    function exportToCSV() {
+        if (allParticipants.length === 0) {
+            alert('Нет данных для экспорта. Сначала загрузите номера.');
+            return;
+        }
+
+        const csvContent = [
+            'Номер,Баллы,Всего,Дата,UID',
+            ...allParticipants.map(p => 
+                `${p.lotteryNumber},${p.score},${p.total},"${new Date(p.createdAt?.seconds * 1000).toLocaleString('ru-RU')}",${p.uid}`
+            )
+        ].join('\n');
+
+        downloadFile(csvContent, 'participants.csv', 'text/csv');
+    }
+
+    function exportToJSON() {
+        if (allParticipants.length === 0) {
+            alert('Нет данных для экспорта. Сначала загрузите номера.');
+            return;
+        }
+
+        const jsonContent = JSON.stringify(allParticipants, null, 2);
+        downloadFile(jsonContent, 'participants.json', 'application/json');
+    }
+
+    function downloadFile(content, filename, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function drawWinner() {
+        if (allParticipants.length === 0) {
+            alert('Нет участников для розыгрыша. Сначала загрузите номера.');
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * allParticipants.length);
+        const winner = allParticipants[randomIndex];
+        
+        const winnerDisplay = document.getElementById('winner-display');
+        const winnerNumber = document.querySelector('.winner-number');
+        
+        if (winnerDisplay && winnerNumber) {
+            winnerNumber.textContent = winner.lotteryNumber;
+            winnerDisplay.style.display = 'block';
+            winnerDisplay.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 
 
@@ -481,6 +654,13 @@
         
         scoreDisplay.innerHTML = `Правильных ответов: <span class="correct">${score}</span> из ${total}. Ошибок: <span class="incorrect">${incorrect}</span>.`;
         
+        // Генерируем уникальный номер участника
+        lotteryNumber = generateLotteryNumber();
+        const lotteryNumberElement = document.getElementById('lottery-number');
+        if (lotteryNumberElement) {
+            lotteryNumberElement.textContent = lotteryNumber;
+        }
+        
         if (score <= 4) {
             resultTitle.textContent = "Новичок в мире кино";
             resultDescription.textContent = "Вы только начинаете свой путь! Это отличный повод открыть для себя классику советского кино и взглянуть на знакомые улицы под другим углом.";
@@ -520,6 +700,7 @@
                     score,
                     total,
                     incorrect,
+                    lotteryNumber: lotteryNumber,
                     createdAt: serverTimestamp(),
                     userAgent: navigator.userAgent,
                 });
@@ -568,7 +749,119 @@
     restartBtn.addEventListener('click', () => {
         location.reload();
     });
+
+    // Обработчик копирования номера участника
+    const copyNumberBtn = document.getElementById('copy-number-btn');
+    if (copyNumberBtn) {
+        copyNumberBtn.addEventListener('click', async () => {
+            if (lotteryNumber) {
+                try {
+                    await navigator.clipboard.writeText(lotteryNumber);
+                    // Показываем уведомление об успешном копировании
+                    const originalText = copyNumberBtn.innerHTML;
+                    copyNumberBtn.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20,6 9,17 4,12"></polyline>
+                        </svg>
+                    `;
+                    copyNumberBtn.style.backgroundColor = 'var(--correct-color)';
+                    
+                    setTimeout(() => {
+                        copyNumberBtn.innerHTML = originalText;
+                        copyNumberBtn.style.backgroundColor = '';
+                    }, 2000);
+                } catch (err) {
+                    console.error('Ошибка копирования: ', err);
+                    // Fallback для старых браузеров
+                    const textArea = document.createElement('textarea');
+                    textArea.value = lotteryNumber;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                }
+            }
+        });
+    }
     
+    // Обработчики для админ-панели
+    const adminPanel = document.getElementById('admin-panel');
+    const adminToggleBtn = document.getElementById('admin-toggle-btn');
+    const loadNumbersBtn = document.getElementById('load-numbers-btn');
+    const exportCsvBtn = document.getElementById('export-csv-btn');
+    const exportJsonBtn = document.getElementById('export-json-btn');
+    const drawWinnerBtn = document.getElementById('draw-winner-btn');
+    const closeAdminBtn = document.getElementById('close-admin-btn');
+
+    if (adminToggleBtn) {
+        adminToggleBtn.addEventListener('click', () => {
+            if (adminPanel) {
+                adminPanel.style.display = adminPanel.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+        
+        // Двойной клик по кнопке админ-панели скрывает её
+        adminToggleBtn.addEventListener('dblclick', () => {
+            adminToggleBtn.style.display = 'none';
+            if (adminPanel) {
+                adminPanel.style.display = 'none';
+            }
+        });
+    }
+
+    if (loadNumbersBtn) {
+        loadNumbersBtn.addEventListener('click', loadParticipants);
+    }
+
+    if (exportCsvBtn) {
+        exportCsvBtn.addEventListener('click', exportToCSV);
+    }
+
+    if (exportJsonBtn) {
+        exportJsonBtn.addEventListener('click', exportToJSON);
+    }
+
+    if (drawWinnerBtn) {
+        drawWinnerBtn.addEventListener('click', drawWinner);
+    }
+
+    if (closeAdminBtn) {
+        closeAdminBtn.addEventListener('click', () => {
+            if (adminPanel) {
+                adminPanel.style.display = 'none';
+            }
+        });
+    }
+
+    // Секретная комбинация для доступа к админ-панели
+    let adminKeySequence = [];
+    const adminSecretKey = ['a', 'd', 'm', 'i', 'n']; // последовательность: a-d-m-i-n
+    
+    // Функция для показа админ-панели (доступна из консоли)
+    window.showAdminPanel = function() {
+        if (adminToggleBtn) {
+            adminToggleBtn.style.display = 'block';
+            adminToggleBtn.style.position = 'fixed';
+            adminToggleBtn.style.top = '10px';
+            adminToggleBtn.style.right = '10px';
+            adminToggleBtn.style.zIndex = '9999';
+            adminToggleBtn.style.background = '#ff6b35';
+            console.log('Админ-панель активирована!');
+        }
+    };
+    
+    document.addEventListener('keydown', (e) => {
+        adminKeySequence.push(e.key.toLowerCase());
+        if (adminKeySequence.length > adminSecretKey.length) {
+            adminKeySequence.shift();
+        }
+        
+        if (adminKeySequence.join('') === adminSecretKey.join('')) {
+            window.showAdminPanel();
+            adminKeySequence = []; // сбрасываем последовательность
+        }
+    });
+
     document.addEventListener('DOMContentLoaded', async () => {
         initMetroQuestion();
         initQuotesQuestion();
@@ -643,128 +936,6 @@
 
 </script>
 
-<!-- Движущаяся полоса с кадрами из квиза -->
-<footer class="movie-strip">
-    <div class="movie-strip-inner">
-        <div class="movie-strip-track">
-            <div class="movie-strip-item">
-                <img src="img/start.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/pic1.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/pic2.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/pic3.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/winter.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/cherry.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/dragonfly.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/potion.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/rebus.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/kids.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/boyarskiy.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/nagiyev.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/gordeyev.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/guzeyeva.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_msk.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_spb.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_ekb.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_kazan.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_minsk.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <!-- Дублируем для бесшовной анимации -->
-            <div class="movie-strip-item">
-                <img src="img/start.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/pic1.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/pic2.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/pic3.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/winter.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/cherry.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/dragonfly.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/potion.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/rebus.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/kids.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/boyarskiy.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/nagiyev.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/gordeyev.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/guzeyeva.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_msk.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_spb.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_ekb.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_kazan.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-            <div class="movie-strip-item">
-                <img src="img/metro_minsk.webp" alt="Кадр из фильма" loading="lazy">
-            </div>
-        </div>
-    </div>
-</footer>
 
 </body>
 </html>

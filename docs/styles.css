@@ -19,9 +19,9 @@ body { font-family: 'Montserrat', Arial, sans-serif; }
 .welcome-content h1, .quiz-header h1 { font-family: 'Pilotka','Montserrat',sans-serif; }
 
 /* Ваш результат! */
-#results h2 { font-family: 'Pilotka','Montserrat',sans-serif; }
+#results h2 { font-family: 'Montserrat',sans-serif; font-weight: bold; }
 /* Заголовок уровня результата */
-#result-title { font-family: 'Christopher','Montserrat',sans-serif; }
+#result-title { font-family: 'Pilotka','Montserrat',sans-serif; font-size: 3.6rem; }
 
 /* Цвет рамки выбранного варианта */
 .answer.selected { border-color: #4ba4cb; background-color: #e7f1ff; }
@@ -320,6 +320,251 @@ label {
 #score-display span.correct { color: var(--correct-color); font-weight: bold; }
 #score-display span.incorrect { color: var(--incorrect-color); font-weight: bold; }
 
+/* Стили для блока с номером участника розыгрыша */
+.lottery-number-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 2px solid var(--primary-color);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+}
+
+.lottery-number-container h3 {
+    color: var(--primary-color);
+    font-family: 'Christopher','Montserrat',sans-serif !important;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.lottery-number-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+#lottery-number {
+    font-family: 'Montserrat', monospace;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #2c3e50;
+    background: white;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    letter-spacing: 1px;
+    user-select: all;
+    min-width: 200px;
+    text-align: center;
+}
+
+.copy-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+}
+
+.copy-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.copy-btn:active {
+    transform: translateY(0);
+}
+
+.lottery-number-info {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin: 0;
+    font-style: italic;
+}
+
+/* Стили для админ-панели */
+.admin-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.admin-content {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.admin-content h2 {
+    color: var(--primary-color);
+    font-family: 'Pilotka', 'Montserrat', sans-serif;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.admin-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.admin-controls .action-btn {
+    min-width: 150px;
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+}
+
+.stats-info {
+    background: var(--light-gray);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.stats-info p {
+    margin: 0.5rem 0;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.numbers-list-container {
+    margin-bottom: 2rem;
+}
+
+.numbers-list-container h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.numbers-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    background: white;
+}
+
+.participant-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.participant-item:last-child {
+    border-bottom: none;
+}
+
+.participant-item:hover {
+    background-color: #f8f9fa;
+}
+
+.participant-number {
+    font-family: 'Montserrat', monospace;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    min-width: 100px;
+}
+
+.participant-score {
+    color: var(--secondary-color);
+    font-weight: bold;
+    min-width: 80px;
+    text-align: center;
+}
+
+.participant-date {
+    color: #6c757d;
+    font-size: 0.9rem;
+    min-width: 150px;
+    text-align: right;
+}
+
+.winner-display {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 2rem;
+    animation: winnerPulse 2s infinite;
+}
+
+@keyframes winnerPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.winner-display h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.winner-number {
+    font-family: 'Montserrat', monospace;
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+}
+
+.admin-toggle-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    background: #ff6b35;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.admin-toggle-btn:hover {
+    background: #e55a2b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
 /* Итоговая строка результата — шрифт Pilotka */
 #score-display {
     font-family: 'Pilotka', 'Inter', sans-serif;
@@ -399,6 +644,68 @@ label {
     .quiz-step[data-question="9"] .image-rebus img { max-width: 90vw; }
     .nav-btn, .action-btn { width: 100%; padding: 0.85rem 1.25rem; }
     body { background-attachment: scroll; }
+    
+    /* Адаптив для блока с номером участника */
+    .lottery-number-container {
+        padding: 1rem;
+        margin: 1.5rem 0;
+    }
+    
+    .lottery-number-container h3 {
+        font-family: 'Christopher','Montserrat',sans-serif !important;
+        font-size: 1.2rem;
+    }
+    
+    .lottery-number-display {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    #lottery-number {
+        font-size: 1.1rem;
+        padding: 0.6rem 1rem;
+        min-width: auto;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .copy-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    /* Адаптив для админ-панели */
+    .admin-content {
+        padding: 1rem;
+        max-width: 95%;
+    }
+    
+    .admin-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .admin-controls .action-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .participant-item {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    
+    .participant-number,
+    .participant-score,
+    .participant-date {
+        min-width: auto;
+        text-align: center;
+    }
+    
+    .winner-number {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 420px) {
