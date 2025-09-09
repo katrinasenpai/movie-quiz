@@ -631,7 +631,29 @@ label {
 
 /* Адаптив для мобильных устройств */
 @media (max-width: 768px) {
-    .welcome-content { padding: 1.25rem; }
+    /* Исправляем позиционирование на мобильных */
+    body {
+        background-attachment: scroll;
+        align-items: flex-start;
+        padding: 10px;
+        min-height: 100vh;
+    }
+    
+    .welcome-screen, .quiz-container {
+        width: 95%;
+        margin: 0 auto;
+        min-height: calc(100vh - 20px);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .welcome-content { 
+        padding: 1.5rem; 
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
     .welcome-content h1 { font-size: clamp(1.25rem, 7vw, 1.8rem); }
     .welcome-content p { font-size: 1rem; }
     .quiz-header { padding: 1.25rem; }
@@ -643,35 +665,43 @@ label {
     .image-rebus img { max-width: 80vw; }
     .quiz-step[data-question="9"] .image-rebus img { max-width: 90vw; }
     .nav-btn, .action-btn { width: 100%; padding: 0.85rem 1.25rem; }
-    body { background-attachment: scroll; }
     
     /* Адаптив для блока с номером участника */
     .lottery-number-container {
         padding: 1rem;
-        margin: 1.5rem 0;
+        margin: 1rem 0;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .lottery-number-container h3 {
         font-family: 'Christopher','Montserrat',sans-serif !important;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .lottery-number-display {
         flex-direction: column;
         gap: 0.75rem;
+        width: 100%;
+        max-width: 100%;
     }
     
     #lottery-number {
-        font-size: 1.1rem;
-        padding: 0.6rem 1rem;
+        font-size: 1rem;
+        padding: 0.5rem 0.75rem;
         min-width: auto;
         width: 100%;
-        max-width: 300px;
+        max-width: 100%;
+        box-sizing: border-box;
+        word-break: break-all;
     }
     
     .copy-btn {
         width: 100%;
-        max-width: 200px;
+        max-width: 150px;
+        align-self: center;
     }
     
     /* Адаптив для админ-панели */
@@ -709,10 +739,38 @@ label {
 }
 
 @media (max-width: 420px) {
+    body {
+        padding: 5px;
+    }
+    
+    .welcome-screen, .quiz-container {
+        width: 98%;
+        min-height: calc(100vh - 10px);
+    }
+    
+    .welcome-content { 
+        padding: 1rem; 
+    }
+    
     .welcome-content h1 { font-size: clamp(1rem, 7vw, 1.4rem); }
     .quiz-header h1 { font-size: 1.35rem; }
     .question-title { font-size: 1.1rem; }
     .image-options img { height: 110px; }
+    
+    /* Дополнительные исправления для номера розыгрыша на очень маленьких экранах */
+    .lottery-number-container {
+        padding: 0.75rem;
+        margin: 0.75rem 0;
+    }
+    
+    .lottery-number-container h3 {
+        font-size: 1rem;
+    }
+    
+    #lottery-number {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.6rem;
+    }
 }
 
 /* Меньше анимаций для системных настроек экономии движения */
