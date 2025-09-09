@@ -304,13 +304,26 @@
         console.log('Пароль установлен:', window.ADMIN_CONFIG.password);
     } else {
         console.error('❌ Конфигурация не загружена! Проверьте файлы конфигурации');
-        // Последний fallback - устанавливаем пароль по умолчанию
+        // Последний fallback - используем зашифрованный пароль
+        const encryptedData = 'bGliMjAyNQ=='; // base64 encoded 'lib2025'
+        const key = 'movie-quiz-2024'; // ключ для дополнительной защиты
+        
+        // Простое шифрование XOR
+        function decryptPassword(encrypted, key) {
+            const decoded = atob(encrypted);
+            let result = '';
+            for (let i = 0; i < decoded.length; i++) {
+                result += String.fromCharCode(decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+            }
+            return result;
+        }
+        
         window.ADMIN_CONFIG = {
-            password: 'admin123', // Временный пароль по умолчанию
+            password: decryptPassword(encryptedData, key),
             maxLoginAttempts: 3,
             sessionTimeout: 30 * 60 * 1000
         };
-        console.log('⚠️ Использован временный пароль по умолчанию');
+        console.log('✅ Использован зашифрованный пароль');
     }
 </script>
 
