@@ -265,13 +265,14 @@
 <div id="admin-panel" class="admin-panel" style="display: none;">
     <div class="admin-content">
         <h2>Админ-панель - Номера участников розыгрыша</h2>
-        <div class="admin-controls">
-            <button id="load-numbers-btn" class="action-btn">Загрузить номера</button>
-            <button id="export-csv-btn" class="action-btn" style="background-color: var(--correct-color);">Экспорт CSV</button>
-            <button id="export-json-btn" class="action-btn" style="background-color: var(--secondary-color);">Экспорт JSON</button>
-            <button id="draw-winner-btn" class="action-btn" style="background-color: #ff6b35;">Провести розыгрыш</button>
-            <button id="close-admin-btn" class="action-btn" style="background-color: #dc3545;">Закрыть</button>
-        </div>
+                <div class="admin-controls">
+                    <button id="load-numbers-btn" class="action-btn">Загрузить номера</button>
+                    <button id="export-csv-btn" class="action-btn" style="background-color: var(--correct-color);">Экспорт CSV</button>
+                    <button id="export-json-btn" class="action-btn" style="background-color: var(--secondary-color);">Экспорт JSON</button>
+                    <button id="draw-winner-btn" class="action-btn" style="background-color: #ff6b35;">Провести розыгрыш</button>
+                    <button id="clear-data-btn" class="action-btn" style="background-color: #dc3545;">🗑️ Очистить все данные</button>
+                    <button id="close-admin-btn" class="action-btn" style="background-color: #6c757d;">Закрыть</button>
+                </div>
         
         <div class="stats-info">
             <p>Всего участников: <span id="total-participants">0</span></p>
@@ -296,7 +297,7 @@
 <!-- Firebase SDK -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-    import { getFirestore, doc, runTransaction, setDoc, getDoc, collection, addDoc, serverTimestamp, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+    import { getFirestore, doc, runTransaction, setDoc, getDoc, collection, addDoc, serverTimestamp, getDocs, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
     import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 
     const firebaseConfig = {
@@ -355,6 +356,38 @@
     }
 
     // Функции для админ-панели
+    async function clearAllData() {
+        if (!db) {
+            alert('Firebase не инициализирован');
+            return;
+        }
+
+        if (!confirm('⚠️ ВНИМАНИЕ! Это действие удалит ВСЕ данные из базы. Продолжить?')) {
+            return;
+        }
+
+        try {
+            const attemptsRef = collection(db, 'quizAttempts');
+            const querySnapshot = await getDocs(attemptsRef);
+            
+            const deletePromises = [];
+            querySnapshot.forEach((doc) => {
+                deletePromises.push(deleteDoc(doc.ref));
+            });
+
+            await Promise.all(deletePromises);
+            
+            // Очищаем локальный массив
+            allParticipants = [];
+            updateParticipantsDisplay();
+            
+            alert(`✅ Удалено ${deletePromises.length} записей из базы данных`);
+        } catch (error) {
+            console.error('Ошибка удаления данных:', error);
+            alert('Ошибка при удалении данных');
+        }
+    }
+
     async function loadParticipants() {
         if (!db) {
             alert('Firebase не инициализирован');
@@ -791,12 +824,19 @@
     const exportCsvBtn = document.getElementById('export-csv-btn');
     const exportJsonBtn = document.getElementById('export-json-btn');
     const drawWinnerBtn = document.getElementById('draw-winner-btn');
+    const clearDataBtn = document.getElementById('clear-data-btn');
     const closeAdminBtn = document.getElementById('close-admin-btn');
 
     if (adminToggleBtn) {
         adminToggleBtn.addEventListener('click', () => {
             if (adminPanel) {
-                adminPanel.style.display = adminPanel.style.display === 'none' ? 'block' : 'none';
+                const isHidden = adminPanel.style.display === 'none';
+                adminPanel.style.display = isHidden ? 'block' : 'none';
+                
+                // Автоматически загружаем данные при открытии админ-панели
+                if (isHidden) {
+                    loadParticipants();
+                }
             }
         });
         
@@ -825,6 +865,10 @@
         drawWinnerBtn.addEventListener('click', drawWinner);
     }
 
+    if (clearDataBtn) {
+        clearDataBtn.addEventListener('click', clearAllData);
+    }
+
     if (closeAdminBtn) {
         closeAdminBtn.addEventListener('click', () => {
             if (adminPanel) {
@@ -847,6 +891,9 @@
             adminToggleBtn.style.zIndex = '9999';
             adminToggleBtn.style.background = '#ff6b35';
             console.log('Админ-панель активирована!');
+            
+            // Автоматически загружаем данные при активации
+            loadParticipants();
         }
     };
     

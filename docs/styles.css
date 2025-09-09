@@ -443,6 +443,20 @@ label {
     padding: 0.6rem 1rem;
 }
 
+/* Специальные стили для кнопки очистки данных */
+#clear-data-btn {
+    background-color: #dc3545 !important;
+    border: 2px solid #c82333;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+#clear-data-btn:hover {
+    background-color: #c82333 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
 .stats-info {
     background: var(--light-gray);
     padding: 1rem;
@@ -634,7 +648,7 @@ label {
     /* Исправляем позиционирование на мобильных */
     body {
         background-attachment: scroll;
-        align-items: flex-start;
+        align-items: center;
         padding: 10px;
         min-height: 100vh;
     }
@@ -642,17 +656,16 @@ label {
     .welcome-screen, .quiz-container {
         width: 95%;
         margin: 0 auto;
-        min-height: calc(100vh - 20px);
+        max-height: calc(100vh - 20px);
         display: flex;
         flex-direction: column;
     }
     
     .welcome-content { 
         padding: 1.5rem; 
-        flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
     }
     .welcome-content h1 { font-size: clamp(1.25rem, 7vw, 1.8rem); }
     .welcome-content p { font-size: 1rem; }
