@@ -296,6 +296,15 @@
 
 <!-- Конфигурация (загружается первым) -->
 <script src="config.js"></script>
+<script>
+    // Проверяем загрузку конфигурации
+    console.log('Конфигурация загружена:', !!window.ADMIN_CONFIG);
+    if (window.ADMIN_CONFIG) {
+        console.log('Пароль установлен:', window.ADMIN_CONFIG.password);
+    } else {
+        console.error('❌ Конфигурация не загружена! Проверьте файл config.js');
+    }
+</script>
 
 <!-- Firebase SDK -->
 <script type="module">
@@ -360,6 +369,16 @@
 
     // Функции для админ-панели
     // ПАРОЛЬ БЕЗОПАСНО ХРАНИТСЯ В config.js (не загружается в GitHub)
+    
+    // Функция для отладки (доступна из консоли)
+    window.debugAdmin = function() {
+        console.log('=== ОТЛАДКА АДМИН-ПАНЕЛИ ===');
+        console.log('Конфигурация загружена:', !!window.ADMIN_CONFIG);
+        console.log('Пароль в конфигурации:', window.ADMIN_CONFIG?.password);
+        console.log('Тип пароля:', typeof window.ADMIN_CONFIG?.password);
+        console.log('Длина пароля:', window.ADMIN_CONFIG?.password?.length);
+        console.log('============================');
+    };
     
     // Функция для смены пароля (доступна из консоли)
     window.changePassword = function() {
@@ -930,9 +949,15 @@
             return; // Отменено пользователем
         }
 
+        // Отладочная информация
+        console.log('Введенный пароль:', password);
+        console.log('Ожидаемый пароль:', window.ADMIN_CONFIG?.password);
+        console.log('Конфигурация загружена:', !!window.ADMIN_CONFIG);
+        
         // Проверяем пароль для админ-панели
         if (password !== window.ADMIN_CONFIG?.password) {
             alert('❌ Неверный пароль! Доступ запрещен.');
+            console.log('Пароли не совпадают!');
             return;
         }
 
@@ -964,8 +989,15 @@
                 return;
             }
 
+            // Отладочная информация
+            console.log('Секретная комбинация активирована!');
+            console.log('Введенный пароль:', password);
+            console.log('Ожидаемый пароль:', window.ADMIN_CONFIG?.password);
+            console.log('Конфигурация загружена:', !!window.ADMIN_CONFIG);
+            
             if (password !== window.ADMIN_CONFIG?.password) {
                 alert('❌ Неверный пароль! Доступ запрещен.');
+                console.log('Пароли не совпадают!');
                 adminKeySequence = []; // сбрасываем последовательность
                 return;
             }
