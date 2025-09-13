@@ -318,7 +318,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
     import { getFirestore, doc, runTransaction, setDoc, getDoc, collection, addDoc, serverTimestamp, getDocs, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCcam04I594Zl-t83DGNH4eIcTBynJZweQ",
@@ -1076,35 +1076,33 @@
             if (auth) {
                 onAuthStateChanged(auth, async (user) => {
                     try {
-                        if (!user) {
-                            await signInAnonymously(auth);
-                            return; // дождемся следующего срабатывания onAuthStateChanged
-                        }
-                        authUserId = user.uid;
-                        // синхронизируем локальный uid для обратной совместимости
-                        uniqueUserId = localStorage.getItem(LOCAL_STORAGE_UID_KEY) || authUserId;
-                        localStorage.setItem(LOCAL_STORAGE_UID_KEY, uniqueUserId);
+                        if (user) {
+                            authUserId = user.uid;
+                            // синхронизируем локальный uid для обратной совместимости
+                            uniqueUserId = localStorage.getItem(LOCAL_STORAGE_UID_KEY) || authUserId;
+                            localStorage.setItem(LOCAL_STORAGE_UID_KEY, uniqueUserId);
 
-                        // регистрация пользователя в коллекции quizUsers
-                        const userRef = doc(db, 'quizUsers', authUserId);
-                        const existing = await getDoc(userRef);
-                        if (!existing.exists()) {
-                            await setDoc(userRef, {
-                                createdAt: serverTimestamp(),
-                                userAgent: navigator.userAgent,
-                                anon: true,
-                            });
-                            // инкремент уникальных
-                            const statsRootRef = doc(db, "quizStats", "completions");
-                            await runTransaction(db, async (transaction) => {
-                                const counterDoc = await transaction.get(statsRootRef);
-                                if (!counterDoc.exists()) {
-                                    transaction.set(statsRootRef, { totalCompletions: 0, uniqueUsers: 1 });
-                                } else {
-                                    const newUnique = (counterDoc.data().uniqueUsers || 0) + 1;
-                                    transaction.update(statsRootRef, { uniqueUsers: newUnique });
-                                }
-                            });
+                            // регистрация пользователя в коллекции quizUsers
+                            const userRef = doc(db, 'quizUsers', authUserId);
+                            const existing = await getDoc(userRef);
+                            if (!existing.exists()) {
+                                await setDoc(userRef, {
+                                    createdAt: serverTimestamp(),
+                                    userAgent: navigator.userAgent,
+                                    anon: true,
+                                });
+                                // инкремент уникальных
+                                const statsRootRef = doc(db, "quizStats", "completions");
+                                await runTransaction(db, async (transaction) => {
+                                    const counterDoc = await transaction.get(statsRootRef);
+                                    if (!counterDoc.exists()) {
+                                        transaction.set(statsRootRef, { totalCompletions: 0, uniqueUsers: 1 });
+                                    } else {
+                                        const newUnique = (counterDoc.data().uniqueUsers || 0) + 1;
+                                        transaction.update(statsRootRef, { uniqueUsers: newUnique });
+                                    }
+                                });
+                            }
                         }
                     } catch (err) {
                         console.error('Auth init error: ', err);
