@@ -332,12 +332,17 @@
     let db;
     let auth;
     const LOCAL_STORAGE_UID_KEY = 'quiz_uid';
+    
+    console.log('Проверяем firebaseConfig:', firebaseConfig);
+    
     try {
         const app = initializeApp(firebaseConfig);
         db = getFirestore(app);
         auth = getAuth(app);
+        console.log('Firebase успешно инициализирован:', { db, auth });
     } catch (e) {
         console.error("Ошибка инициализации Firebase. Убедитесь, что вы правильно вставили объект firebaseConfig.", e);
+        console.error("Детали ошибки:", e.message);
     }
     
     const welcomeScreen = document.getElementById('welcome-screen');
@@ -454,18 +459,27 @@
 
     async function loadParticipants() {
         if (!db) {
+            console.error('Firebase не инициализирован');
             alert('Firebase не инициализирован');
             return;
         }
 
+        console.log('Начинаем загрузку участников...');
+        
         try {
             const attemptsRef = collection(db, 'quizAttempts');
+            console.log('Ссылка на коллекцию создана:', attemptsRef);
+            
             const q = query(attemptsRef, orderBy('createdAt', 'desc'));
+            console.log('Запрос создан:', q);
+            
             const querySnapshot = await getDocs(q);
+            console.log('Документы получены:', querySnapshot.size);
             
             allParticipants = [];
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
+                console.log('Обрабатываем документ:', doc.id, data);
                 if (data.lotteryNumber) {
                     allParticipants.push({
                         id: doc.id,
@@ -477,23 +491,37 @@
                     });
                 }
             });
-
+            
+            console.log('Найдено участников с номерами:', allParticipants.length);
             updateParticipantsDisplay();
+            console.log(`Загружено ${allParticipants.length} участников с номерами розыгрыша`);
         } catch (error) {
             console.error('Ошибка загрузки участников:', error);
-            alert('Ошибка загрузки данных');
+            console.error('Детали ошибки:', error.message);
+            console.error('Стек ошибки:', error.stack);
+            alert('Ошибка загрузки данных: ' + error.message);
         }
     }
 
     function updateParticipantsDisplay() {
+        console.log('Обновляем отображение участников, количество:', allParticipants.length);
+        
         const totalParticipants = document.getElementById('total-participants');
         const uniqueNumbers = document.getElementById('unique-numbers');
         const numbersList = document.getElementById('numbers-list');
 
-        if (totalParticipants) totalParticipants.textContent = allParticipants.length;
+        console.log('Элементы DOM:', { totalParticipants, uniqueNumbers, numbersList });
+
+        if (totalParticipants) {
+            totalParticipants.textContent = allParticipants.length;
+            console.log('Установлено количество участников:', allParticipants.length);
+        }
         
         const uniqueNumbersSet = new Set(allParticipants.map(p => p.lotteryNumber));
-        if (uniqueNumbers) uniqueNumbers.textContent = uniqueNumbersSet.size;
+        if (uniqueNumbers) {
+            uniqueNumbers.textContent = uniqueNumbersSet.size;
+            console.log('Установлено количество уникальных номеров:', uniqueNumbersSet.size);
+        }
 
         if (numbersList) {
             numbersList.innerHTML = '';
@@ -889,6 +917,16 @@
     const exportJsonBtn = document.getElementById('export-json-btn');
     const drawWinnerBtn = document.getElementById('draw-winner-btn');
     const closeAdminBtn = document.getElementById('close-admin-btn');
+    
+    console.log('Элементы админ-панели:', {
+        adminPanel: !!adminPanel,
+        adminToggleBtn: !!adminToggleBtn,
+        loadNumbersBtn: !!loadNumbersBtn,
+        exportCsvBtn: !!exportCsvBtn,
+        exportJsonBtn: !!exportJsonBtn,
+        drawWinnerBtn: !!drawWinnerBtn,
+        closeAdminBtn: !!closeAdminBtn
+    });
 
     if (adminToggleBtn) {
         adminToggleBtn.addEventListener('click', () => {
